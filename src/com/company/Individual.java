@@ -6,6 +6,10 @@ public class Individual {
     public int fitness = 0;
     public int[] genes;
 
+    public Individual(){
+
+    }
+
     public Individual(int genesLength) {
         this.genes = new int[genesLength];
         Random rn = new Random();

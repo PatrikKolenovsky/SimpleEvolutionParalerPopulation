@@ -4,11 +4,13 @@ import java.util.Random;
 
 public class EvolutionProcess {
 
+    boolean isInitalize = false;
     int maxGeneration = 0;
     int numberOfGenerations = 0;
     int populationSize = 0;
     int requiredNumberOfOnes = 0;
     int mutationRate = 0;
+    public Population population;
     Individual fittest;
     Individual secondFittest;
 
@@ -22,20 +24,24 @@ public class EvolutionProcess {
     public void startProcess() {
         // START
         // Generate the initial population
-        Population population = new Population();
-        population.initializePopulation(this.populationSize, this.requiredNumberOfOnes);
+        if (!isInitalize) {
+            Population population = new Population();
+            population.initializePopulation(this.populationSize, this.requiredNumberOfOnes);
+            this.population = population;
+            isInitalize = true;
+        }
         // Compute fitness
-        population.calculateFitness();
+        this.population.calculateFitness();
 //        population.getPopulationInfo();
 //        System.out.println("Evolution is running");
         // REPEAT
-        while (population.getFittestIndividual().getFitness() < this.requiredNumberOfOnes) {
+        while (this.population.getFittestIndividual().getFitness() < this.requiredNumberOfOnes) {
             this.numberOfGenerations++;
             this.selection(population);
             this.crossover();
             this.addFittestOffspring(population);
             this.mutation(population);
-            population.calculateFitness();
+            this.population.calculateFitness();
 //            population.getPopulationInfo();
             if (this.numberOfGenerations > maxGeneration){
 //                System.out.println("Max number of G run out");
@@ -44,7 +50,7 @@ public class EvolutionProcess {
         }
 
 //        System.out.println("\nSolution found in generation " + numberOfGenerations);
-        population.getPopulationInfo();
+        this.population.getPopulationInfo();
 //        System.out.println();
     }
 
